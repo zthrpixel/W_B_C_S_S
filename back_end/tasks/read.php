@@ -51,7 +51,7 @@ try {
     }
 
     if (($_GET["scope"] ?? "") === "today") {
-        $where[] = "t.due_date = CURDATE()";
+        $where[] = "(t.due_date IS NULL OR t.due_date = CURDATE())";
     }
 
     $sql = "SELECT t.task_id, t.child_id, t.assigned_by, t.title, t.description,
