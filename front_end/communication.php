@@ -59,6 +59,6 @@ require_once __DIR__ . '/../back_end/auth/auth_check.php';
         <h2 class="h4">Picture Cards</h2>
         <div id="cardList" class="row g-3"></div>
     </main>
-    <script src="js/communication.js"></script>
+    <script src="javascript/communication.js"></script>
 </body>
 </html>
