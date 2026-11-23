@@ -17,9 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once __DIR__ . "/../config/database.php";
 
 try {
-    $childId = filter_input(INPUT_POST, "child_id", FILTER_VALIDATE_INT);
-    $date = trim((string) ($_POST["progress_date"] ?? ($_POST["date"] ?? "")));
-    $remarks = trim((string) ($_POST["remarks"] ?? ""));
+    $contentType = $_SERVER["CONTENT_TYPE"] ?? "";
+    $input = [];
+    if (strpos($contentType, "application/json") !== false) {
+        $input = json_decode(file_get_contents("php://input"), true) ?? [];
+    } else {
+        $input = $_POST;
+    }
+
+    $childId = filter_var($input["child_id"] ?? null, FILTER_VALIDATE_INT);
+    $date = trim((string) ($input["progress_date"] ?? ($input["date"] ?? "")));
+    $remarks = trim((string) ($input["remarks"] ?? ""));
 
     if (!$childId) {
         http_response_code(400);
@@ -80,7 +88,17 @@ try {
         ":remarks" => $remarks === "" ? null : $remarks
     ]);
 
-    $progressId = (int) $pdo->lastInsertId();
+    // Fetch the actual record ID because ON DUPLICATE KEY UPDATE may not create a new ID.
+    $record = $pdo->prepare(
+        "SELECT progress_id
+         FROM progress_records
+         WHERE child_id = :child_id AND progress_date = :progress_date"
+    );
+    $record->execute([
+        ":child_id" => $childId,
+        ":progress_date" => $date
+    ]);
+    $progressId = (int) $record->fetchColumn();
     http_response_code(201);
     echo json_encode([
         "success" => true,
