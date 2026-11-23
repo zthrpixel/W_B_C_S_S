@@ -17,10 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once __DIR__ . "/../config/database.php";
 
 try {
-    $categoryId = filter_input(INPUT_POST, "category_id", FILTER_VALIDATE_INT);
-    $label = trim((string) ($_POST["label"] ?? ""));
-    $imagePath = trim((string) ($_POST["image_path"] ?? ""));
-    $spokenText = trim((string) ($_POST["spoken_text"] ?? ""));
+    $contentType = $_SERVER["CONTENT_TYPE"] ?? "";
+    $input = [];
+    if (strpos($contentType, "application/json") !== false) {
+        $input = json_decode(file_get_contents("php://input"), true) ?? [];
+    } else {
+        $input = $_POST;
+    }
+
+    $categoryId = filter_var($input["category_id"] ?? null, FILTER_VALIDATE_INT);
+    $label = trim((string) ($input["card_name"] ?? $input["label"] ?? ""));
+    $imagePath = trim((string) ($input["image_path"] ?? ""));
+    $spokenText = trim((string) ($input["spoken_text"] ?? ""));
 
     if (!$categoryId || $label === "") {
         http_response_code(400);

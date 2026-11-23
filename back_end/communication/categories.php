@@ -24,9 +24,11 @@ try {
     );
     $stmt->execute();
 
+    $categories = $stmt->fetchAll();
     echo json_encode([
         "success" => true,
-        "categories" => $stmt->fetchAll()
+        "data" => $categories,
+        "categories" => $categories
     ]);
 } catch (PDOException $exception) {
     error_log($exception->getMessage());

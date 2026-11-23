@@ -34,7 +34,7 @@ let selectedCategoryId = "";
 
 async function loadCategories() {
     const data = await apiFetch("../back_end/communication/categories.php");
-    const categories = data.categories || [];
+    const categories = data.categories || data.data || [];
     const list = document.getElementById("categoryList");
     const select = document.getElementById("cardCategory");
 
@@ -64,7 +64,7 @@ async function loadCards() {
     }
     const data = await apiFetch("../back_end/communication/cards.php?category_id=" +
         encodeURIComponent(selectedCategoryId));
-    const cards = data.cards || [];
+    const cards = data.cards || data.data || [];
     document.getElementById("cardList").innerHTML = cards.length ? cards.map((card) => `
         <div class="col-sm-6 col-md-4">
             <article class="card picture-card text-center p-3">
