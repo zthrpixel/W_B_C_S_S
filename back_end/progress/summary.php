@@ -36,12 +36,16 @@ try {
         $params[":child_id"] = $childId;
     }
 
+    $dueClause = "t.due_date = :progress_date";
+    if ($date === date("Y-m-d")) {
+        $dueClause = "(t.due_date IS NULL OR t.due_date = :progress_date)";
+    }
     $sql = "SELECT COUNT(*) AS total_tasks,
                    SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END) AS completed_tasks
             FROM tasks t
             INNER JOIN children c ON c.child_id = t.child_id
             WHERE " . implode(" AND ", $where) . "
-              AND (t.due_date IS NULL OR t.due_date = :progress_date)";
+              AND " . $dueClause;
     $params[":progress_date"] = $date;
 
     $stmt = $pdo->prepare($sql);

@@ -17,17 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once __DIR__ . "/../config/database.php";
 
 try {
-    $contentType = $_SERVER["CONTENT_TYPE"] ?? "";
-    $input = [];
-    if (strpos($contentType, "application/json") !== false) {
-        $input = json_decode(file_get_contents("php://input"), true) ?? [];
-    } else {
-        $input = $_POST;
-    }
-
-    $childId = filter_var($input["child_id"] ?? null, FILTER_VALIDATE_INT);
-    $date = trim((string) ($input["progress_date"] ?? ($input["date"] ?? "")));
-    $remarks = trim((string) ($input["remarks"] ?? ""));
+    $childId = filter_input(INPUT_POST, "child_id", FILTER_VALIDATE_INT);
+    $date = trim((string) ($_POST["progress_date"] ?? ($_POST["date"] ?? "")));
+    $remarks = trim((string) ($_POST["remarks"] ?? ""));
 
     if (!$childId) {
         http_response_code(400);
@@ -56,12 +48,16 @@ try {
         exit();
     }
 
+    $dueClause = "due_date = :progress_date";
+    if ($date === date("Y-m-d")) {
+        $dueClause = "(due_date IS NULL OR due_date = :progress_date)";
+    }
     $counts = $pdo->prepare(
         "SELECT COUNT(*) AS total_tasks,
                 SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_tasks
          FROM tasks
          WHERE child_id = :child_id
-           AND (due_date IS NULL OR due_date = :progress_date)"
+           AND " . $dueClause
     );
     $counts->execute([":child_id" => $childId, ":progress_date" => $date]);
     $summary = $counts->fetch();
@@ -88,17 +84,7 @@ try {
         ":remarks" => $remarks === "" ? null : $remarks
     ]);
 
-    // Fetch the actual record ID because ON DUPLICATE KEY UPDATE may not create a new ID.
-    $record = $pdo->prepare(
-        "SELECT progress_id
-         FROM progress_records
-         WHERE child_id = :child_id AND progress_date = :progress_date"
-    );
-    $record->execute([
-        ":child_id" => $childId,
-        ":progress_date" => $date
-    ]);
-    $progressId = (int) $record->fetchColumn();
+    $progressId = (int) $pdo->lastInsertId();
     http_response_code(201);
     echo json_encode([
         "success" => true,
