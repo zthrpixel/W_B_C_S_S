@@ -74,6 +74,6 @@ require_once __DIR__ . '/../back_end/auth/auth_check.php';
         </section>
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="javascript/script.js"></script>
 </body>
 </html>
