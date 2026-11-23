@@ -1,5 +1,5 @@
 <?php
-// Delete an owned picture card.
+// Set response type to JSON.
 session_start();
 header("Content-Type: application/json");
 
@@ -17,27 +17,45 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once __DIR__ . "/../config/database.php";
 
 try {
-    $cardId = filter_input(INPUT_POST, "card_id", FILTER_VALIDATE_INT);
-    if (!$cardId) {
+    $contentType = $_SERVER["CONTENT_TYPE"] ?? "";
+    $input = [];
+    if (strpos($contentType, "application/json") !== false) {
+        $input = json_decode(file_get_contents("php://input"), true) ?? [];
+    } else {
+        $input = $_POST;
+    }
+
+    $cardId = filter_var($input["card_id"] ?? null, FILTER_VALIDATE_INT);
+    if (!$cardId || $cardId < 1) {
         http_response_code(400);
-        echo json_encode(["success" => false, "message" => "Card ID is required"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "A valid card ID is required."
+        ]);
         exit();
     }
 
-    $check = $pdo->prepare("SELECT card_id FROM communication_cards WHERE card_id = :card_id");
-    $check->execute([":card_id" => $cardId]);
-    if (!$check->fetch()) {
+    $delete = $pdo->prepare("DELETE FROM communication_cards WHERE card_id = ?");
+    $delete->execute([$cardId]);
+
+    if ($delete->rowCount() === 0) {
         http_response_code(404);
-        echo json_encode(["success" => false, "message" => "Picture card not found"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "Communication card not found."
+        ]);
         exit();
     }
 
-    $delete = $pdo->prepare("DELETE FROM communication_cards WHERE card_id = :card_id");
-    $delete->execute([":card_id" => $cardId]);
-
-    echo json_encode(["success" => true, "message" => "Picture card deleted"]);
+    echo json_encode([
+        "success" => true,
+        "message" => "Communication card deleted successfully."
+    ]);
 } catch (PDOException $exception) {
     error_log($exception->getMessage());
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Could not delete picture card"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Failed to delete communication card."
+    ]);
 }
