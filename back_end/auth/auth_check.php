@@ -8,8 +8,8 @@ if (session_status() === PHP_SESSION_NONE) {
 // Check whether a user is logged in
 if (!isset($_SESSION["user_id"])) {
 
-    // Return the user to the login page
-    header("Location: /W_B_C_S_S/front_end/index.php");
+    // Return the user to the login page using a relative path
+    header("Location: index.php");
     exit();
 }
 
