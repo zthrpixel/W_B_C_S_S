@@ -1,223 +1,407 @@
-# USER MANUAL
+# TECHNICAL DOCUMENTATION
 ## Web-Based Visual Schedule, Task Management and Communication System
 
-### 1. Introduction
+### 1. Project Overview
 
-The Web-Based Visual Schedule, Task Management and Communication System is a web application designed to help caregivers, therapists, and teachers organize children's daily activities, manage assigned tasks, monitor progress, and support communication through visual-based tools.
+The Web-Based Visual Schedule, Task Management and Communication System is a web-based application developed to assist caregivers, therapists, and teachers in managing children's daily activities, schedules, tasks, progress, and communication resources.
 
-This manual provides instructions on how to access and use the system's available features.
+The application uses PHP for server-side processing, MySQL/MariaDB for database management, HTML and CSS for interface development, and JavaScript for client-side interactions.
 
-### 2. Accessing the System
+The project is developed and tested locally using XAMPP and phpMyAdmin. GitHub is used for source code management and team collaboration.
 
-Before using the application, make sure that:
+### 2. Project Objectives
 
-- XAMPP is installed.
-- Apache and MySQL are running.
-- The project database has been imported into phpMyAdmin.
-- The project files are located inside the XAMPP `htdocs` directory.
+The system aims to:
 
-Open a web browser and visit:
+1. Provide an organized platform for managing child profiles.
+2. Allow users to create and manage visual schedules.
+3. Support task assignment and completion monitoring.
+4. Provide a child-friendly interface.
+5. Record and summarize children's progress.
+6. Provide visual communication resources.
+7. Implement account authentication and access control.
+
+### 3. Technologies Used
+
+| Technology | Description and Purpose |
+|---|---|
+| PHP | Handles server-side processing, authentication, and database operations. |
+| MySQL/MariaDB | Stores user accounts, child profiles, schedules, tasks, and other application records. |
+| phpMyAdmin | Provides a browser-based interface for database administration. |
+| XAMPP | Provides the local Apache web server and MySQL/MariaDB environment. |
+| HTML5 | Defines the structure of application pages. |
+| CSS3 | Controls layout, appearance, and responsive styling. |
+| JavaScript | Handles client-side interactions and dynamic interface behavior. |
+| GitHub | Manages source code, branches, commits, and pull requests. |
+
+### 4. System Architecture
+
+The application follows a client-server architecture.
+
+**Frontend Layer**
+
+The frontend is responsible for displaying the application's pages and collecting user input.
+
+Main technologies:
+- HTML
+- CSS
+- JavaScript
+
+**Backend Layer**
+
+The backend processes requests, validates information, manages sessions, and communicates with the database.
+
+Main technology:
+- PHP
+
+**Database Layer**
+
+The database stores and organizes application information.
+
+Main technology:
+- MySQL/MariaDB
+
+**Development Environment**
+
+The application is hosted locally during development through XAMPP and administered using phpMyAdmin.
+
+### 5. Project Directory Structure
+
+The project is organized into separate frontend, backend, database, and documentation directories.
+
+```text
+W_B_C_S_S/
+│
+├── back_end/
+│   ├── auth/
+│   ├── children/
+│   ├── config/
+│   ├── communication/
+│   ├── progress/
+│   ├── schedules/
+│   └── tasks/
+│
+├── front_end/
+│   ├── css/
+│   ├── js/
+│   ├── index.php
+│   ├── register.php
+│   ├── dashboard.php
+│   ├── children.php
+│   ├── schedule.php
+│   ├── task.php
+│   ├── child_view.php
+│   ├── progress.php
+│   ├── communication.php
+│   └── settings.php
+│
+├── database/
+│   └── schema.sql
+│
+├── documentation/
+│   ├── screenshots/
+│   ├── technical_documentation/
+│   └── user_manual/
+│
+└── README.md
+```
+
+Note: This is the intended organizational structure. Update it if the actual repository contains additional or differently named files.
+
+### 6. Database Design
+
+The system uses a relational database named `visual_schedule_system`.
+
+The database contains the following main tables:
+
+| Table | Purpose |
+|---|---|
+| users | Stores registered user information and account roles. |
+| children | Stores child profile information associated with users. |
+| activities | Stores available activities for schedule creation. |
+| schedules | Stores schedule information for individual children. |
+| schedule_items | Stores individual activities assigned to schedules, including their times and order. |
+| tasks | Stores assigned tasks, due dates, priorities, and statuses. |
+| task_completions | Stores task completion records. |
+| communication_categories | Stores communication card categories. |
+| communication_cards | Stores visual communication card information. |
+| progress_records | Stores children's progress summaries. |
+
+#### 6.1 Database Relationships
+
+The database uses primary keys and foreign keys to connect related records.
+
+Main relationships include:
+
+- One user can manage multiple child profiles.
+- One child can have multiple schedules.
+- One schedule can contain multiple schedule items.
+- Activities can be referenced by multiple schedule items.
+- One child can have multiple assigned tasks.
+- One task can have completion records.
+- One communication category can contain multiple communication cards.
+- One child can have multiple progress records.
+
+#### 6.2 Important Database Fields
+
+**users**
+- user_id
+- first_name
+- last_name
+- username
+- email
+- age
+- address
+- password
+- role
+- phone
+- created_at
+- updated_at
+
+**children**
+- child_id
+- user_id
+- first_name
+- last_name
+- date_of_birth
+- gender
+- profile_image
+- development_domain
+- notes
+
+**schedules**
+- schedule_id
+- child_id
+- created_by
+- schedule_name
+- schedule_date
+- description
+
+**schedule_items**
+- schedule_item_id
+- schedule_id
+- activity_id
+- start_time
+- end_time
+- item_order
+- reminder_enabled
+
+**tasks**
+- task_id
+- child_id
+- assigned_by
+- title
+- description
+- due_date
+- priority
+- status
+
+**progress_records**
+- progress_id
+- child_id
+- progress_date
+- total_tasks
+- completed_tasks
+- completion_percentage
+- remarks
+
+The remaining communication and task completion fields are defined in the database schema file.
+
+### 7. System Modules
+
+#### 7.1 Authentication Module
+
+Responsible for user registration, login, logout, and session management.
+
+Main functions:
+- Register new accounts.
+- Hash passwords before storing them.
+- Verify passwords during login.
+- Create authenticated user sessions.
+- Restrict access to protected pages.
+- Destroy sessions during logout.
+
+#### 7.2 Caregiver Dashboard
+
+Provides the main navigation interface and access to the application's modules.
+
+#### 7.3 Child Profile Module
+
+Handles child profile creation, retrieval, updating, and deletion.
+
+The module associates child records with the authenticated user.
+
+#### 7.4 Visual Schedule Module
+
+Manages schedules and their associated activities.
+
+Schedule information is stored in the schedules table, while individual scheduled activities are stored in schedule_items.
+
+#### 7.5 Task Management Module
+
+Handles task creation, retrieval, modification, deletion, and completion tracking.
+
+Tasks are associated with child profiles.
+
+#### 7.6 Child View Module
+
+Provides a simplified interface for displaying schedules and tasks intended for child interaction.
+
+#### 7.7 Progress Tracking Module
+
+Uses task-related information and progress records to monitor task completion and maintain progress summaries.
+
+#### 7.8 Communication Module
+
+Organizes communication cards into categories and provides access to their associated visual and text information.
+
+#### 7.9 Settings Module
+
+Allows authenticated users to update available profile information and account preferences.
+
+### 8. Database Connection
+
+The application uses PHP Data Objects (PDO) to communicate with the database.
+
+The connection configuration is maintained in:
+
+`back_end/config/database.php`
+
+Example connection:
+
+```php
+$host = "localhost";
+$dbname = "visual_schedule_system";
+$username = "root";
+$password = "";
+
+$pdo = new PDO(
+    "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+    $username,
+    $password
+);
+
+$pdo->setAttribute(
+    PDO::ATTR_ERRMODE,
+    PDO::ERRMODE_EXCEPTION
+);
+```
+
+PDO provides a consistent interface for database operations and supports prepared statements.
+
+### 9. Security Implementation
+
+The system incorporates several basic security practices.
+
+**Password Hashing**
+
+Passwords are stored using PHP's password hashing functions rather than plain text.
+
+**Prepared Statements**
+
+PDO prepared statements are used for database queries to reduce SQL injection risks.
+
+**Session Management**
+
+Authenticated users are identified through PHP sessions.
+
+**Access Control**
+
+Protected pages check whether the user has an authenticated session before allowing access.
+
+**Input Validation**
+
+User-submitted information is checked before database operations.
+
+**Output Escaping**
+
+HTML output is escaped to reduce the risk of cross-site scripting.
+
+### 10. Installation and Configuration
+
+#### 10.1 Requirements
+
+- XAMPP
+- PHP
+- MySQL/MariaDB
+- phpMyAdmin
+- Web browser
+- Project source code
+
+#### 10.2 Installation Steps
+
+1. Install XAMPP.
+2. Place the project folder inside `htdocs`.
+3. Start Apache and MySQL through the XAMPP Control Panel.
+4. Open phpMyAdmin.
+5. Create or import the `visual_schedule_system` database using the provided SQL schema.
+6. Configure the database connection file.
+7. Open the application through the local server.
+
+Application URL:
 
 `http://localhost/W_B_C_S_S/front_end/index.php`
 
-### 3. User Registration
+### 11. GitHub Version Control and Collaboration
 
-To create an account:
+GitHub is used to manage the source code and coordinate team development.
 
-1. Open the system's login page.
-2. Click the Register link.
-3. Enter the required personal information.
-4. Choose an available account role.
-5. Enter a password and confirm it.
-6. Submit the registration form.
-7. Return to the login page and sign in using your registered credentials.
+The project uses a branch-based workflow.
 
-### 4. User Login
+**Development Workflow**
 
-To access the system:
+1. Create a feature branch for an assigned module.
+2. Implement the required changes.
+3. Commit the changes to the feature branch.
+4. Submit a Pull Request targeting the main branch.
+5. Review and test the submitted changes.
+6. Merge approved changes into the main branch.
 
-1. Open the login page.
-2. Enter your registered username or email.
-3. Enter your password.
-4. Click the Login button.
-5. After successful authentication, the system redirects you to the dashboard.
+The main branch serves as the central version of the project.
 
-If the login information is incorrect, check your credentials and try again.
+### 12. Testing and Quality Assurance
 
-### 5. Dashboard Overview
+The system should be tested through the following categories:
 
-The dashboard serves as the main navigation area of the application.
-
-It provides access to the different modules:
-
-- Overview
-- Children Profiles
-- Visual Schedules
-- Task Library
-- Progress Logs
-- Communication
-- Child View Mode
-- Settings
-
-Select a navigation item to access its corresponding module.
-
-### 6. Children Profiles
-
-The Children Profiles module allows users to manage child information.
-
-**Adding a Child**
-
-1. Open Children Profiles.
-2. Select the option to add a child.
-3. Enter the required information.
-4. Submit the form.
-5. Verify that the new profile appears in the list.
-
-**Viewing a Child**
-
-1. Open Children Profiles.
-2. Locate the desired child.
-3. View the available profile information.
-
-**Updating a Child**
-
-1. Locate the child profile.
-2. Select its edit option.
-3. Modify the required information.
-4. Save the changes.
-
-**Deleting a Child**
-
-1. Locate the child profile.
-2. Select the delete option.
-3. Confirm the deletion if prompted.
-
-Always verify the selected profile before deleting a record.
-
-### 7. Visual Schedule Creator
-
-The Visual Schedule module is used to organize a child's daily activities.
-
-**Creating a Schedule**
-
-1. Open Visual Schedules.
-2. Select the child associated with the schedule.
-3. Enter the schedule information.
-4. Add the desired activities.
-5. Arrange the activities according to their intended times or order.
-6. Save the schedule.
-
-**Managing Schedules**
-
-Users can view existing schedules and use the available editing or deletion options.
-
-Check the schedule information before saving changes.
-
-### 8. Task Management
-
-The Task Library module allows users to organize and manage assigned tasks.
-
-**Creating a Task**
-
-1. Open Task Library.
-2. Select the option to create a task.
-3. Select the associated child.
-4. Enter the task title and description.
-5. Set the due date and priority if available.
-6. Save the task.
-
-**Updating a Task**
-
-1. Find the task you want to modify.
-2. Select its edit option.
-3. Update the required information.
-4. Save the changes.
-
-**Managing Task Status**
-
-Tasks may have the following statuses:
-
-- Pending
-- In Progress
-- Completed
-
-Update the task status when its progress changes.
-
-### 9. Child View Mode
-
-Child View Mode provides a simplified interface intended to make assigned activities and tasks easier to understand.
-
-1. Open Child View Mode from the dashboard.
-2. Select or access the available child activities.
-3. View the displayed tasks and schedules.
-4. Use the available visual elements to interact with the interface.
-
-The available interactions depend on the implemented Child View features.
-
-### 10. Progress Tracking
-
-The Progress Logs module provides records related to children's task completion and progress.
-
-1. Open Progress Logs.
-2. Select or locate the relevant child.
-3. Review the available progress information.
-4. Check the recorded completed tasks and progress summaries.
-
-Progress information depends on the task completion records stored in the database.
-
-### 11. Communication Board
-
-The Communication module provides visual communication cards organized into categories.
-
-1. Open Communication.
-2. Browse the available categories.
-3. Select a category to view its communication cards.
-4. Select an available card to use its associated communication content.
-5. Use the available card management options if permitted.
-
-The communication cards contain visual references and associated text.
-
-### 12. Account Settings
-
-The Settings module allows users to manage available account preferences.
-
-**Updating Profile Information**
-
-1. Open Settings.
-2. Modify your first name or last name.
-3. Click Save Changes.
-4. Wait for the confirmation message.
-
-**Child View Sound Effects**
-
-1. Locate Child View Sound Effects.
-2. Select Enabled or Disabled.
-3. Click Save Changes.
-4. Verify that your selection remains after refreshing the page.
-
-Note: Sound playback must also be supported by the Child View implementation for this preference to affect actual sounds.
-
-### 13. Logging Out
-
-To safely leave the application:
-
-1. Locate the Log Out option in the navigation sidebar.
-2. Click Log Out.
-3. The system ends the current session and returns you to the login page.
-
-### 14. Troubleshooting
-
-| Problem | Possible Solution |
+| Test Category | Testing Objective |
 |---|---|
-| The application cannot be opened | Check whether Apache is running in XAMPP. |
-| Database connection error | Check whether MySQL is running and verify the database configuration. |
-| Login unsuccessful | Verify your username/email and password. |
-| Changes are not saved | Check required fields and verify that the database connection is working. |
-| A page cannot be found | Verify the filename and navigation link. |
-| Records are not displayed | Check the database and verify that the correct records exist. |
+| Authentication | Verify registration, login, session handling, and logout. |
+| Child Profiles | Verify creating, viewing, updating, and deleting child records. |
+| Visual Schedules | Verify schedule creation, activity organization, editing, and deletion. |
+| Task Management | Verify task creation, modification, deletion, and completion. |
+| Child View | Verify that assigned activities and tasks display correctly. |
+| Progress Tracking | Verify that progress information reflects task completion records. |
+| Communication | Verify category and communication card operations. |
+| Settings | Verify that profile updates and preferences are saved correctly. |
+| Integration | Verify that navigation and database operations work across modules. |
+
+Testing results should be documented separately, including screenshots of successful operations and any identified issues.
+
+### 13. System Limitations
+
+The application is designed primarily as a local academic project.
+
+Potential limitations include:
+
+- The application requires a configured local server environment when run through XAMPP.
+- The application depends on an active database connection.
+- The available functionality depends on the modules implemented and integrated into the current version.
+- Features such as external notifications, online hosting, and third-party integrations are not assumed to be available.
+
+### 14. Future Enhancements
+
+Possible improvements include:
+
+- Improved responsive design for mobile devices.
+- Additional accessibility features.
+- More advanced schedule customization.
+- Expanded progress reports.
+- Additional communication options.
+- Improved notification and reminder functionality.
+- Deployment to a hosted web server.
 
 ### 15. Conclusion
 
-The system provides a centralized platform for managing child profiles, daily schedules, assigned tasks, progress information, and visual communication resources.
+The Web-Based Visual Schedule, Task Management and Communication System provides a centralized web application for organizing child-related schedules, tasks, progress records, and communication resources.
 
-Users should ensure that information is entered correctly and regularly updated to maintain accurate records.
+Through PHP, MySQL/MariaDB, HTML, CSS, JavaScript, XAMPP, phpMyAdmin, and GitHub, the project demonstrates the development and integration of a modular web-based information system.
