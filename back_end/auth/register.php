@@ -9,6 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
+// Send the user back to the form with an error code the page can explain
+function fail(string $code): void {
+    header("Location: ../../front_end/register.php?error=" . urlencode($code));
+    exit();
+}
+
 // Get and clean form values
 $first_name = trim($_POST["first_name"] ?? "");
 $last_name = trim($_POST["last_name"] ?? "");
@@ -32,34 +38,34 @@ if (
     $confirm_password === "" ||
     $role === ""
 ) {
-    exit("Please fill in all required fields.");
+    fail("required");
 }
 
 // Validate email
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    exit("Please enter a valid email address.");
+    fail("email");
 }
 
 // Validate username
 if (!preg_match('/^[a-zA-Z0-9_]{3,50}$/', $username)) {
-    exit("Username must be 3-50 characters and contain only letters, numbers, and underscores.");
+    fail("username");
 }
 
 // Validate password
 if (strlen($password) < 8) {
-    exit("Password must be at least 8 characters long.");
+    fail("password_length");
 }
 
 // Confirm password
 if ($password !== $confirm_password) {
-    exit("Passwords do not match.");
+    fail("password_mismatch");
 }
 
 // Validate role
 $allowed_roles = ["caregiver", "therapist", "teacher"];
 
 if (!in_array($role, $allowed_roles, true)) {
-    exit("Invalid user role.");
+    fail("role");
 }
 
 // Validate optional age
@@ -67,7 +73,7 @@ $age = null;
 
 if ($age_input !== "") {
     if (!ctype_digit($age_input) || (int)$age_input > 120) {
-        exit("Please enter a valid age.");
+        fail("age");
     }
 
     $age = (int)$age_input;
@@ -105,10 +111,10 @@ try {
 
     // Duplicate username or email
     if ($e->getCode() === "23000") {
-        exit("That username or email is already registered.");
+        fail("duplicate");
     }
 
     error_log($e->getMessage());
-    exit("Registration failed. Please try again.");
+    fail("server");
 }
 ?>

@@ -24,11 +24,11 @@ try {
     $sql = "SELECT user_id, first_name, last_name,
                    username, email, password, role
             FROM users
-            WHERE username = :login OR email = :login
+            WHERE username = :username OR email = :email
             LIMIT 1";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":login" => $login]);
+    $stmt->execute([":username" => $login, ":email" => $login]);
 
     $user = $stmt->fetch();
 
