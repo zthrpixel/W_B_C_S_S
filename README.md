@@ -71,7 +71,7 @@ The system allows authorized users to create child profiles, prepare visual sche
 | XAMPP | Local development environment |
 | GitHub | Version control and collaboration |
 
-## 📋 Requirements
+## Requirements
 
 Before running the project, make sure you have:
 
