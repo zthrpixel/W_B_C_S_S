@@ -1,0 +1,223 @@
+# USER MANUAL
+## Web-Based Visual Schedule, Task Management and Communication System
+
+### 1. Introduction
+
+The Web-Based Visual Schedule, Task Management and Communication System is a web application designed to help caregivers, therapists, and teachers organize children's daily activities, manage assigned tasks, monitor progress, and support communication through visual-based tools.
+
+This manual provides instructions on how to access and use the system's available features.
+
+### 2. Accessing the System
+
+Before using the application, make sure that:
+
+- XAMPP is installed.
+- Apache and MySQL are running.
+- The project database has been imported into phpMyAdmin.
+- The project files are located inside the XAMPP `htdocs` directory.
+
+Open a web browser and visit:
+
+`http://localhost/W_B_C_S_S/front_end/index.php`
+
+### 3. User Registration
+
+To create an account:
+
+1. Open the system's login page.
+2. Click the Register link.
+3. Enter the required personal information.
+4. Choose an available account role.
+5. Enter a password and confirm it.
+6. Submit the registration form.
+7. Return to the login page and sign in using your registered credentials.
+
+### 4. User Login
+
+To access the system:
+
+1. Open the login page.
+2. Enter your registered username or email.
+3. Enter your password.
+4. Click the Login button.
+5. After successful authentication, the system redirects you to the dashboard.
+
+If the login information is incorrect, check your credentials and try again.
+
+### 5. Dashboard Overview
+
+The dashboard serves as the main navigation area of the application.
+
+It provides access to the different modules:
+
+- Overview
+- Children Profiles
+- Visual Schedules
+- Task Library
+- Progress Logs
+- Communication
+- Child View Mode
+- Settings
+
+Select a navigation item to access its corresponding module.
+
+### 6. Children Profiles
+
+The Children Profiles module allows users to manage child information.
+
+**Adding a Child**
+
+1. Open Children Profiles.
+2. Select the option to add a child.
+3. Enter the required information.
+4. Submit the form.
+5. Verify that the new profile appears in the list.
+
+**Viewing a Child**
+
+1. Open Children Profiles.
+2. Locate the desired child.
+3. View the available profile information.
+
+**Updating a Child**
+
+1. Locate the child profile.
+2. Select its edit option.
+3. Modify the required information.
+4. Save the changes.
+
+**Deleting a Child**
+
+1. Locate the child profile.
+2. Select the delete option.
+3. Confirm the deletion if prompted.
+
+Always verify the selected profile before deleting a record.
+
+### 7. Visual Schedule Creator
+
+The Visual Schedule module is used to organize a child's daily activities.
+
+**Creating a Schedule**
+
+1. Open Visual Schedules.
+2. Select the child associated with the schedule.
+3. Enter the schedule information.
+4. Add the desired activities.
+5. Arrange the activities according to their intended times or order.
+6. Save the schedule.
+
+**Managing Schedules**
+
+Users can view existing schedules and use the available editing or deletion options.
+
+Check the schedule information before saving changes.
+
+### 8. Task Management
+
+The Task Library module allows users to organize and manage assigned tasks.
+
+**Creating a Task**
+
+1. Open Task Library.
+2. Select the option to create a task.
+3. Select the associated child.
+4. Enter the task title and description.
+5. Set the due date and priority if available.
+6. Save the task.
+
+**Updating a Task**
+
+1. Find the task you want to modify.
+2. Select its edit option.
+3. Update the required information.
+4. Save the changes.
+
+**Managing Task Status**
+
+Tasks may have the following statuses:
+
+- Pending
+- In Progress
+- Completed
+
+Update the task status when its progress changes.
+
+### 9. Child View Mode
+
+Child View Mode provides a simplified interface intended to make assigned activities and tasks easier to understand.
+
+1. Open Child View Mode from the dashboard.
+2. Select or access the available child activities.
+3. View the displayed tasks and schedules.
+4. Use the available visual elements to interact with the interface.
+
+The available interactions depend on the implemented Child View features.
+
+### 10. Progress Tracking
+
+The Progress Logs module provides records related to children's task completion and progress.
+
+1. Open Progress Logs.
+2. Select or locate the relevant child.
+3. Review the available progress information.
+4. Check the recorded completed tasks and progress summaries.
+
+Progress information depends on the task completion records stored in the database.
+
+### 11. Communication Board
+
+The Communication module provides visual communication cards organized into categories.
+
+1. Open Communication.
+2. Browse the available categories.
+3. Select a category to view its communication cards.
+4. Select an available card to use its associated communication content.
+5. Use the available card management options if permitted.
+
+The communication cards contain visual references and associated text.
+
+### 12. Account Settings
+
+The Settings module allows users to manage available account preferences.
+
+**Updating Profile Information**
+
+1. Open Settings.
+2. Modify your first name or last name.
+3. Click Save Changes.
+4. Wait for the confirmation message.
+
+**Child View Sound Effects**
+
+1. Locate Child View Sound Effects.
+2. Select Enabled or Disabled.
+3. Click Save Changes.
+4. Verify that your selection remains after refreshing the page.
+
+Note: Sound playback must also be supported by the Child View implementation for this preference to affect actual sounds.
+
+### 13. Logging Out
+
+To safely leave the application:
+
+1. Locate the Log Out option in the navigation sidebar.
+2. Click Log Out.
+3. The system ends the current session and returns you to the login page.
+
+### 14. Troubleshooting
+
+| Problem | Possible Solution |
+|---|---|
+| The application cannot be opened | Check whether Apache is running in XAMPP. |
+| Database connection error | Check whether MySQL is running and verify the database configuration. |
+| Login unsuccessful | Verify your username/email and password. |
+| Changes are not saved | Check required fields and verify that the database connection is working. |
+| A page cannot be found | Verify the filename and navigation link. |
+| Records are not displayed | Check the database and verify that the correct records exist. |
+
+### 15. Conclusion
+
+The system provides a centralized platform for managing child profiles, daily schedules, assigned tasks, progress information, and visual communication resources.
+
+Users should ensure that information is entered correctly and regularly updated to maintain accurate records.
