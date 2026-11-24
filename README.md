@@ -57,7 +57,7 @@ The system allows authorized users to create child profiles, prepare visual sche
 - Update profile information.
 - Configure Child View sound preferences.
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Technology | Purpose |
 |---|---|
