@@ -94,6 +94,7 @@ $nowTime = date("H:i:s");
                 <a href="progress.php" class="nav-item">Progress Logs</a>
                 <a href="communication.php" class="nav-item">Communication</a>
                 <a href="child_view.php" class="nav-item">Child View Mode</a>
+                <a href="Settings.php" class="nav-item">Settings</a>
             </nav>
 
             <!-- Logout Action -->
