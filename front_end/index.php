@@ -18,11 +18,11 @@ if (isset($_SESSION["user_id"])) {
 
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="auth-body">
 
     <div class="login-container">
         <?php if (isset($_GET["logout"]) && $_GET["logout"] === "success"): ?>
-            <p>You have successfully logged out.</p>
+            <p class="success-message">You have successfully logged out.</p>
         <?php endif; ?>
 
         <h1>Welcome Back!</h1>

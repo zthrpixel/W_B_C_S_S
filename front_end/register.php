@@ -1,4 +1,23 @@
+<?php
+// Friendly messages for the error codes sent back by back_end/auth/register.php
+$errorMessages = [
+    "required"          => "Please fill in all required fields.",
+    "email"             => "Please enter a valid email address.",
+    "username"          => "Username must be 3-50 characters and contain only letters, numbers, and underscores.",
+    "password_length"   => "Password must be at least 8 characters long.",
+    "password_mismatch" => "Passwords do not match.",
+    "role"              => "Please choose a valid account role.",
+    "age"               => "Please enter a valid age.",
+    "duplicate"         => "That username or email is already registered.",
+    "server"            => "Registration failed. Please try again.",
+];
 
+$errorCode = is_string($_GET["error"] ?? null) ? $_GET["error"] : "";
+$errorMessage = "";
+if ($errorCode !== "") {
+    $errorMessage = $errorMessages[$errorCode] ?? $errorMessages["server"];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +27,18 @@
 
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="auth-body">
 
     <div class="register-container">
 
         <h1>Create Account</h1>
         <p>Register to access the Visual Schedule System.</p>
+
+        <?php if ($errorMessage !== ""): ?>
+            <p class="error-message">
+                <?= htmlspecialchars($errorMessage) ?>
+            </p>
+        <?php endif; ?>
 
         <?php if (isset($_GET["status"]) && $_GET["status"] === "success"): ?>
             <p class="success-message">
