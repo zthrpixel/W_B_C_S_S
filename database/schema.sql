@@ -3,6 +3,7 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
 USE visual_schedule_system;
+SET NAMES utf8mb4;
 
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -203,3 +204,30 @@ CREATE TABLE progress_records (
     CONSTRAINT unique_child_progress_date
         UNIQUE (child_id, progress_date)
 ) ENGINE=InnoDB;
+
+
+-- ---------------------------------------------------------------
+-- Starter data for the communication board.
+-- Categories and picture cards are shared by all users, and the app has
+-- no screen for creating categories, so a few are provided here.
+-- (image_path holds an emoji or short text shown on the card.)
+-- ---------------------------------------------------------------
+INSERT INTO communication_categories (category_id, category_name, description) VALUES
+    (1, 'Needs',      'Things I need help with'),
+    (2, 'Feelings',   'How I am feeling'),
+    (3, 'Food & Drink', 'Things I want to eat or drink'),
+    (4, 'Activities', 'Things I want to do');
+
+INSERT INTO communication_cards (category_id, card_name, image_path, spoken_text) VALUES
+    (1, 'Help',      '🆘', 'I need help, please.'),
+    (1, 'Bathroom',  '🚽', 'I need to use the bathroom.'),
+    (1, 'Break',     '⏸️', 'I need a break.'),
+    (2, 'Happy',     '😊', 'I feel happy.'),
+    (2, 'Sad',       '😢', 'I feel sad.'),
+    (2, 'Angry',     '😠', 'I feel angry.'),
+    (3, 'Water',     '💧', 'I want water, please.'),
+    (3, 'Snack',     '🍎', 'I want a snack, please.'),
+    (3, 'Lunch',     '🍽️', 'I am hungry. I want lunch.'),
+    (4, 'Play',      '🧸', 'I want to play.'),
+    (4, 'Read',      '📖', 'I want to read a book.'),
+    (4, 'Music',     '🎵', 'I want to listen to music.');
