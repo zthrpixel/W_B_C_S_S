@@ -205,13 +205,6 @@ CREATE TABLE progress_records (
         UNIQUE (child_id, progress_date)
 ) ENGINE=InnoDB;
 
-
--- ---------------------------------------------------------------
--- Starter data for the communication board.
--- Categories and picture cards are shared by all users, and the app has
--- no screen for creating categories, so a few are provided here.
--- (image_path holds an emoji or short text shown on the card.)
--- ---------------------------------------------------------------
 INSERT INTO communication_categories (category_id, category_name, description) VALUES
     (1, 'Needs',      'Things I need help with'),
     (2, 'Feelings',   'How I am feeling'),
@@ -231,3 +224,9 @@ INSERT INTO communication_cards (category_id, card_name, image_path, spoken_text
     (4, 'Play',      '🧸', 'I want to play.'),
     (4, 'Read',      '📖', 'I want to read a book.'),
     (4, 'Music',     '🎵', 'I want to listen to music.');
+
+    
+ALTER TABLE users
+ADD COLUMN sound_cues ENUM('enabled', 'disabled')
+NOT NULL DEFAULT 'enabled';  
+    
